@@ -7,17 +7,17 @@ export const getTransactions = async () => {
   return response.data
 }
 
-export const addTransactions = async (data) => {
+export const addTransaction = async (data) => {
   const response = await axiosInstance.post("/transactions", data)
   return response.data
 }
 
-export const editTransactions = async (id, data) => {
+export const editTransaction = async (id, data) => {
   const response = await axiosInstance.put(`/transactions/${id}`, data)
   return response.data
 }
 
-export const deleteTransactions = async (id) => {
+export const deleteTransaction = async (id) => {
   const response = await axiosInstance.delete(`/transactions/${id}`)
   return response.data
 }
