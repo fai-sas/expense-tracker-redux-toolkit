@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   createTransaction,
   fetchTransactions,
+  updateTransaction,
 } from "../features/transaction/transactionSlice"
 
 export default function Form() {
@@ -17,11 +18,30 @@ export default function Form() {
   const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
 
-  const { isLoading, isError } = useSelector((state) => state.transaction)
+  const data = { name, type, amount: Number(amount) }
+
+  const { editing, isLoading, isError } = useSelector(
+    (state) => state.transaction,
+  )
+
+  //   const editing = useSelector((state) => state.editing)
 
   useEffect(() => {
     dispatch(fetchTransactions())
   }, [dispatch])
+
+  useEffect(() => {
+    const { id, name, type, amount } = editing || {}
+    if (id) {
+      setEditMode(true)
+      setName(name)
+      setType(type)
+      setAmount(amount)
+    } else {
+      setEditMode(false)
+      reset()
+    }
+  }, [editing])
 
   const reset = () => {
     setName("")
@@ -32,21 +52,30 @@ export default function Form() {
   const handleCreate = (e) => {
     e.preventDefault()
 
-    const data = { name, type, amount: Number(amount) }
-
     dispatch(createTransaction(data))
+    reset()
+  }
+
+  const handleUpdate = (e) => {
+    e.preventDefault()
+
+    // const data = { name, type, amount: Number(amount) }
+
+    dispatch(updateTransaction({ id: editing?.id, data }))
+    setEditMode(false)
     reset()
   }
 
   const cancelEditMode = () => {
     setEditMode(false)
+    reset()
   }
 
   return (
     <div className="form">
       <h3>Add new transaction</h3>
 
-      <form onSubmit={handleCreate}>
+      <form onSubmit={editMode ? handleUpdate : handleCreate}>
         <div className="form-group">
           <label>Name</label>
           <input
@@ -99,7 +128,7 @@ export default function Form() {
         </div>
 
         <button type="submit" className="btn" disabled={isLoading}>
-          Add Transaction
+          {editMode ? "Update Transaction" : " Add Transaction"}
         </button>
 
         {!isLoading && isError && (
