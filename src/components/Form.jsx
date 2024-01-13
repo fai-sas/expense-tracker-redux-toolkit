@@ -3,17 +3,31 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-expressions */
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { createTransaction } from "../features/transaction/transactionSlice"
+import {
+  createTransaction,
+  fetchTransactions,
+} from "../features/transaction/transactionSlice"
 
 export default function Form() {
   const [name, setName] = useState("")
   const [type, setType] = useState("")
   const [amount, setAmount] = useState("")
+  const [editMode, setEditMode] = useState(false)
   const dispatch = useDispatch()
 
   const { isLoading, isError } = useSelector((state) => state.transaction)
+
+  useEffect(() => {
+    dispatch(fetchTransactions())
+  }, [dispatch])
+
+  const reset = () => {
+    setName("")
+    setType("")
+    setAmount("")
+  }
 
   const handleCreate = (e) => {
     e.preventDefault()
@@ -21,10 +35,11 @@ export default function Form() {
     const data = { name, type, amount: Number(amount) }
 
     dispatch(createTransaction(data))
+    reset()
+  }
 
-    setName("")
-    setType("")
-    setAmount("")
+  const cancelEditMode = () => {
+    setEditMode(false)
   }
 
   return (
@@ -91,8 +106,11 @@ export default function Form() {
           <p className="error">There was an error occurred</p>
         )}
       </form>
-
-      <button className="btn cancel_edit">Cancel Edit</button>
+      {editMode && (
+        <button className="btn cancel_edit" onClick={cancelEditMode}>
+          Cancel Edit
+        </button>
+      )}
     </div>
   )
 }
