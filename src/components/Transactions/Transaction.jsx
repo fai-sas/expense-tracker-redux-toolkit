@@ -10,6 +10,7 @@ import {
   editActive,
   removeTransaction,
 } from "../../features/transaction/transactionSlice"
+import formatNumberWithCommas from "../../utils/thousandSeparator"
 
 export default function Transaction({ transaction }) {
   const { id, name, amount, type } = transaction || {}
@@ -28,7 +29,7 @@ export default function Transaction({ transaction }) {
     <li className={`transaction ${type}`}>
       <p>{name}</p>
       <div className="right">
-        <p>৳ {amount}</p>
+        <p>৳ {formatNumberWithCommas(amount)}</p>
         <button className="link" onClick={handleEdit}>
           <img alt="Edit" className="icon" src={editImage} />
         </button>

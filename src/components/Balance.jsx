@@ -4,11 +4,24 @@
 /* eslint-disable no-unused-expressions */
 
 import { useSelector } from "react-redux"
+import formatNumberWithCommas from "../utils/thousandSeparator"
 
 export default function Balance() {
   const { transactions } = useSelector((state) => state.transaction)
 
-  const calculateIncome = (transactions) => {}
+  const calculateIncome = (transactions) => {
+    let income = 0
+    transactions.forEach((transaction) => {
+      const { type, amount } = transaction
+      if (type === "income") {
+        income += amount
+      } else {
+        income -= amount
+      }
+    })
+
+    return income
+  }
 
   return (
     <div className="top_card">
@@ -16,7 +29,7 @@ export default function Balance() {
       <h3>
         <span>৳ </span>
         {transactions?.length > 0 ? (
-          <span>{calculateIncome(transactions)}</span>
+          <span>{formatNumberWithCommas(calculateIncome(transactions))}</span>
         ) : (
           0
         )}
