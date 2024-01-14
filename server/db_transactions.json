@@ -1,40 +1,22 @@
 {
   "transactions": [
     {
-      "name": "Salary from Google",
-      "type": "income",
-      "amount": 85365099,
-      "id": 1
-    },
-    {
-      "id": 2,
       "name": "Family Expenses",
       "type": "expense",
-      "amount": 200000
+      "amount": 4457,
+      "id": 2
     },
     {
       "name": "Salary from Facebook",
       "type": "income",
-      "amount": 100099,
+      "amount": 1099,
       "id": 3
     },
     {
       "name": "Salary",
       "type": "income",
-      "amount": 1457,
+      "amount": 5876,
       "id": 4
-    },
-    {
-      "name": "Conveyance",
-      "type": "expense",
-      "amount": 45878,
-      "id": 5
-    },
-    {
-      "name": "Food",
-      "type": "expense",
-      "amount": 200,
-      "id": 6
     }
   ]
 }
